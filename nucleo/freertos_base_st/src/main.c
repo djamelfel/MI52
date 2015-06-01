@@ -92,12 +92,13 @@ int main( void ) {
                 debugging only. */
         configMINIMAL_STACK_SIZE,/* Stack depth  */
         NULL,/* We are not using the task parameter. */
-        2,/* This task will run at priority 2 */
+        3,/* This task will run at priority 2 */
         NULL  /* We are not going to use the task handle. */
-        );
+      );
     /* Create an other task in exactly the same way and at the same
+     *
     priority. */
-    xTaskCreate( vTask1, (const signed char *)"Task 2", configMINIMAL_STACK_SIZE, NULL, 2, NULL );
+    xTaskCreate( vTask1, (const signed char *)"Task 2", configMINIMAL_STACK_SIZE, NULL, 3, NULL );
     /* Create the other task in exactly the same way and a higher priority */
     xTaskCreate( vTask2, (const signed char *)"Task 3",configMINIMAL_STACK_SIZE, NULL, 3, NULL );
 

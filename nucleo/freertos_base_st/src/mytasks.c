@@ -19,6 +19,24 @@ void vTask1( void *pvParameters ) {
     char * TaskName;
     uint32_t delay;
     TickType_t count, count_prev;
+    
+    /* Attempt to create a semaphore. */
+    xSemaphore = xSemaphoreCreateBinary();
+
+    if(xSemaphore != NULL) {
+        // See if we can obtain the semaphore.  If the semaphore is not available
+        // wait 10 ticks to see if it becomes free.
+        if( xSemaphoreTake( xSemaphore, ( TickType_t ) 10 ) == pdTRUE ) {
+            // We were able to obtain the semaphore and can now access the
+            // shared resource.
+
+            // ...
+
+            // We have finished accessing the shared resource.  Release the
+            // semaphore.
+            xSemaphoreGive( xSemaphore );
+        }
+    }
 
     /* get taskname */
     TaskName = pcTaskGetTaskName( NULL );
@@ -38,12 +56,17 @@ void vTask1( void *pvParameters ) {
 }
 
 void vTask2( void *pvParameters ) {
+    TickType_t xLastWakeTime;
+    xLastWakeTime = xTaskGetTickCount();
+
     uint32_t i;
     for( ;; ) {
         LED_ON();
-        for (i=0;i<5000000;i++);
+        //for (i=0;i<5000000;i++);
+        vTaskDelayUntil( &xLastWakeTime, configTICK_RATE_HZ/2); //1/2 sec
         LED_OFF();
-        for (i=0;i<5000000;i++);
+        //for (i=0;i<5000000;i++);
+        vTaskDelayUntil( &xLastWakeTime, configTICK_RATE_HZ/2); //1/2 sec
     }
     vTaskDelete( NULL );
 }
