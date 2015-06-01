@@ -1,0 +1,4 @@
+un fichier ASCII tout simple
+pour tester le pilote UART en
+reception
+
